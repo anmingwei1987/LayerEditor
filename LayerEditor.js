@@ -1,16 +1,13 @@
 const LayerEditor = function(){
+	
 	let panel;
 	let canvas;
+	let renderParam;
 	this.render = function(param){
-		
-		panel = document.getElementById(param.id);
-		
-		let panelStyle = {
-			overflow:'auto',
-		}
-		for(let i in panelStyle){
-			panel.style[i] = panelStyle[i];
-		}
+		renderParam = param;
+		let panel = document.getElementById(param.id);
+		let panelRect = panel.getBoundingClientRect();
+		panel.style.overflow = 'hidden';
 
 		canvas = document.createElement('div');
 		canvas.id = 'editor-canvas';
@@ -19,35 +16,56 @@ const LayerEditor = function(){
 		canvas.style.display = 'inline-block';
 		canvas.style.backgroundColor = '#fff';
 
-		let panelRect = panel.getBoundingClientRect();
-		let canvasRect = canvas.getBoundingClientRect();
-		console.log(panelRect.height);
-		console.log(panelRect.height/10);
-		let paddingY = panelRect.height - panelRect.height/10;
+		let paddingX = panelRect.width*0.1 > param.width*0.1 ? panelRect.width - param.width*0.1 : panelRect.width*0.9;
+		let paddingY = panelRect.height*0.1 > param.height*0.1 ? panelRect.height - param.height*0.1 : panelRect.height*0.9;
 
-		let layout = document.createElement('div');
-		let layoutStyle = {
-			display:'flex',
+		let box = document.createElement('div');
+		let boxStyle = {
+			display:'inline-flex',
 			justifyContent:'center',
 			alignItems:'center',
 			backgroundColor:'#ccc',
 			minWidth:'100%',
 			minHeight:'100%',
 			boxSizing:'border-box',
+			paddingLeft:paddingX,
+			paddingRight:paddingX,
 			paddingTop:paddingY,
 			paddingBottom:paddingY
 		}
-		for(let i in layoutStyle){
-			layout.style[i] = layoutStyle[i];
+		for(let i in boxStyle){
+			box.style[i] = boxStyle[i];
 		}
-		layout.id = 'editor-canvas-box';
-		layout.append(canvas);
+		box.id = 'editor-canvas-box';
+		box.append(canvas);
 
-		panel.innerHTML = layout.outerHTML;
+		let scroll = document.createElement('div');
+		scroll.id = 'editor-canvas-scroll';
+		scroll.style.width = 'calc(100% + 20px)';
+		scroll.style.height = 'calc(100% + 20px)';
+		scroll.style.overflow = 'auto';
+		scroll.append(box);
 		
-		
-		console.log(panel);
+		panel.innerHTML = scroll.outerHTML;
+
+		let boxRect = document.getElementById('editor-canvas-box').getBoundingClientRect();
+		scroll = document.getElementById('editor-canvas-scroll');
+		scroll.scrollTop = (boxRect.height - panelRect.height)/2;
+		scroll.scrollLeft = (boxRect.width - panelRect.width)/2;
+
 	}
+
+	let render = this.render;
+
+	window.addEventListener('resize',function(){
+		render(renderParam);
+	});
+
+	document.addEventListener('mousedown',function(e){
+		console.log(e);
+	});
+	
+
 	this.zoom = function(){
 
 	}
