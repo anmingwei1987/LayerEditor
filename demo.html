@@ -1,9 +1,15 @@
 <script src="LayerEidtor.js"></script>
-<script>
-	var le = new LayerEidtor();
-	le.canvasPanel({id:'panel'});
-	console.log(le);
-</script>
-<div id="panel">
+
+<div id="editor-panel" style="width:100%;height:100%;background:#f8f8f8">
 	
 </div>
+<script>
+	var le = new LayerEditor();
+	le.render({
+		id:'editor-panel',//画布面板容器id
+		width:'600',//画布宽度
+		height:'600',//画布高度
+		zoom:'100'
+	});
+	console.log(le);
+</script>
