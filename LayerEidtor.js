@@ -1,1 +1,6 @@
-特色他说的发生
+const LayerEidtor = function(){
+	
+	this.eidtorCanvasRender = function(param){
+		this.panelId = param.id;
+	}
+}
